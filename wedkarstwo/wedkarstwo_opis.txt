@@ -1,0 +1,3 @@
+Celem tego projektu było zaprojektowanie strony internetowej o wędkarstwie z wykorzystaniem wiedzy o HTML/CSS/JS 
+zdobytej podczas laboratorium z Podstaw Aplikacji Internetowej na 4 semestrze studiów. 
+Był to projekt do samodzielnej realizacji.
