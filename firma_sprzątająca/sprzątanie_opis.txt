@@ -1,5 +1,5 @@
 Celem tego projektu było zaprojektowanie systemu systemu informatycznego dla firmy sprzątającej. 
-Projekt został zrealizowany w trakcie zajęć z Podstaw Inżynierii Oprogramowania. 
+Projekt został zrealizowany w trakcie zajęć z Podstaw Inżynierii Oprogramowania na 4 semestrze studiów. 
 Był to projekt do realizacji prze tryosobowe grupy. 
 W trakcie realizacji projektu my wspólnie przemyślaliśmy każdy etap pracy i równo dzieliliśmy pracę. 
 Za tą pracę każdy otrzymał ocene 4.5. 
