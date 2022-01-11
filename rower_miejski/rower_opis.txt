@@ -1,1 +1,5 @@
-
+Celem tego projektu było zaprojektowanie systemu wspomagającego funkcjonowanie Rowera Miejskiego.
+Projekt został zrealizowany w trakcie zajęć z Wprowadzenie do Systemów Baz Danych na 3 semestrze studiów. 
+Był to projekt do realizacji przez tryosobowe grupy. 
+To było moje peirwsze doświadzczenie pracy w zespole nad jakimś projektem.
+Zdobyłam wiedze z zakresu planowania i równoważnego podziału pracy miżędzy członkami zespołu.
