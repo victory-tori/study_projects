@@ -1,0 +1,243 @@
+--tworzenie tabeli "country" z kluczami typu primary key i unique key
+CREATE TABLE country (
+    country_key    NUMBER(3) NOT NULL,
+    country_name   VARCHAR2(50 CHAR) NOT NULL,
+    country_code   VARCHAR2(3 CHAR) NOT NULL
+);
+ALTER TABLE country ADD CONSTRAINT country_pk PRIMARY KEY ( country_key );
+ALTER TABLE country ADD CONSTRAINT country_code_un UNIQUE ( country_name );
+ALTER TABLE country ADD CONSTRAINT country_name_un UNIQUE ( country_name );
+
+
+--tworzenie tabeli "city" z kluczami typu primary key i unique key
+CREATE TABLE city (
+    city_key      NUMBER(10) NOT NULL,
+    city_name     VARCHAR2(50 CHAR) NOT NULL,
+    country_key   NUMBER(3) NOT NULL
+);
+ALTER TABLE city ADD CONSTRAINT city_pk PRIMARY KEY ( city_key );
+
+
+--tworzenie tabeli "account_status" z kluczami typu primary key i unique key
+CREATE TABLE account_status (
+    account_status_key    NUMBER(1) NOT NULL,
+    account_status_name   VARCHAR2(10 CHAR) NOT NULL
+);
+ALTER TABLE account_status ADD CONSTRAINT account_status_pk PRIMARY KEY ( account_status_key );
+ALTER TABLE account_status ADD CONSTRAINT account_status__un UNIQUE ( account_status_name );
+
+
+--tworzenie tabeli "customer" z kluczami typu primary key i unique key
+CREATE TABLE customer (
+    customer_key         NUMBER(10) NOT NULL,
+    first_name           VARCHAR2(30 CHAR) NOT NULL,
+    last_name            VARCHAR2(50 CHAR) NOT NULL,
+    account_state        NUMBER(5, 2) NOT NULL,
+    phone_number         NUMBER(12) NOT NULL,
+    "e-mail"             VARCHAR2(50 CHAR) NOT NULL,
+    pesel                VARCHAR2(11 CHAR) NOT NULL,
+    post_index           VARCHAR2(6 CHAR) NOT NULL,
+    city_key             NUMBER(10) NOT NULL,
+    account_status_key   NUMBER(1) NOT NULL
+);
+ALTER TABLE customer ADD CONSTRAINT customer_pk PRIMARY KEY ( customer_key );
+ALTER TABLE customer ADD CONSTRAINT customer_email_un UNIQUE ( "e-mail" );
+ALTER TABLE customer ADD CONSTRAINT customer_pesel_un UNIQUE ( pesel );
+ALTER TABLE customer ADD CONSTRAINT customer_phone_un UNIQUE ( phone_number );
+
+
+--tworzenie tabeli "payment_method" z kluczami typu primary key i unique key
+CREATE TABLE payment_method (
+    payment_method_key    NUMBER(1) NOT NULL,
+    payment_method_name   VARCHAR2(20 CHAR) NOT NULL
+);
+ALTER TABLE payment_method ADD CONSTRAINT payment_method_pk PRIMARY KEY ( payment_method_key );
+ALTER TABLE payment_method ADD CONSTRAINT payment_method_un UNIQUE ( payment_method_name );
+
+
+--tworzenie tabeli "customer_payment_method" z kluczami typu primary key i unique key
+CREATE TABLE customer_payment_method (
+    customer_key         NUMBER(10) NOT NULL,
+    payment_method_key   NUMBER(1) NOT NULL
+);
+ALTER TABLE customer_payment_method ADD CONSTRAINT customer_payment_method_pk PRIMARY KEY ( customer_key, payment_method_key );
+
+
+--tworzenie tabeli "bike_station_type" z kluczami typu primary key i unique key
+CREATE TABLE bike_station_type (
+    bike_station_type_key    NUMBER(1) NOT NULL,
+    bike_station_type_name   VARCHAR2(10 CHAR) NOT NULL
+);
+ALTER TABLE bike_station_type ADD CONSTRAINT bike_station_type_pk PRIMARY KEY ( bike_station_type_key );
+ALTER TABLE bike_station_type ADD CONSTRAINT bike_station_type__un UNIQUE ( bike_station_type_name );
+
+
+--tworzenie tabeli "bike_station" z kluczami typu primary key i unique key
+CREATE TABLE bike_station (
+    bike_station_key        NUMBER(5) NOT NULL,
+    bike_station_name       VARCHAR2(10 CHAR) NOT NULL,
+    bike_station_type_key   NUMBER(1) NOT NULL,
+    city_key                NUMBER(10) NOT NULL
+);
+ALTER TABLE bike_station ADD CONSTRAINT bike_station_pk PRIMARY KEY ( bike_station_key );
+
+
+--tworzenie tabeli "bike_type" z kluczami typu primary key i unique key
+CREATE TABLE bike_type (
+    bike_type_key    NUMBER(1) NOT NULL,
+    bike_type_name   VARCHAR2(10 CHAR) NOT NULL
+);
+ALTER TABLE bike_type ADD CONSTRAINT bike_type_pk PRIMARY KEY ( bike_type_key );
+ALTER TABLE bike_type ADD CONSTRAINT bike_type__un UNIQUE ( bike_type_name );
+
+
+--tworzenie tabeli "bike_subtype" z kluczami typu primary key i unique key
+CREATE TABLE bike_subtype (
+    bike_subtype_key    NUMBER(2) NOT NULL,
+    bike_subtype_name   VARCHAR2(10 CHAR) NOT NULL,
+    bike_type_key       NUMBER(1) NOT NULL
+);
+ALTER TABLE bike_subtype ADD CONSTRAINT bike_subtype_pk PRIMARY KEY ( bike_subtype_key );
+ALTER TABLE bike_subtype ADD CONSTRAINT bike_subtype__un UNIQUE ( bike_subtype_name );
+
+
+--tworzenie tabeli "bike_status" z kluczami typu primary key i unique key
+CREATE TABLE bike_status (
+    bike_status_key    NUMBER(1) NOT NULL,
+    bike_status_name   VARCHAR2(10 CHAR) NOT NULL
+);
+ALTER TABLE bike_status ADD CONSTRAINT bike_status_pk PRIMARY KEY ( bike_status_key );
+ALTER TABLE bike_status ADD CONSTRAINT bike_status__un UNIQUE ( bike_status_name );
+
+
+--tworzenie tabeli "bike" z kluczami typu primary key i unique key
+CREATE TABLE bike (
+    bike_key           NUMBER(5) NOT NULL,
+    bike_station_key   NUMBER(5) NOT NULL,
+    bike_status_key    NUMBER(1) NOT NULL,
+    bike_subtype_key   NUMBER(2) NOT NULL
+);
+ALTER TABLE bike ADD CONSTRAINT bike_pk PRIMARY KEY ( bike_key );
+
+
+--tworzenie tabeli "ride_status" z kluczami typu primary key i unique key
+CREATE TABLE ride_status (
+    ride_status_key    NUMBER(1) NOT NULL,
+    ride_status_name   VARCHAR2(10 CHAR) NOT NULL
+);
+ALTER TABLE ride_status ADD CONSTRAINT ride_status_pk PRIMARY KEY ( ride_status_key );
+ALTER TABLE ride_status ADD CONSTRAINT ride_status_un UNIQUE ( ride_status_name );
+
+
+--tworzenie tabeli "ride" z kluczami typu primary key i unique key
+CREATE TABLE ride (
+    ride_key                  NUMBER(10) NOT NULL,
+    ride_time_start           DATE NOT NULL,
+    ride_time_finish          DATE,
+    ride_time                 INTEGER NOT NULL,
+    ride_price                NUMBER(2, 4) NOT NULL,
+    customer_key              NUMBER(10) NOT NULL,
+    ride_status_key           NUMBER(1) NOT NULL,
+    bike_station_start_key    NUMBER(5) NOT NULL,
+    bike_station_finish_key   NUMBER(5),
+    bike_key                  NUMBER(5) NOT NULL
+);
+ALTER TABLE ride ADD CONSTRAINT ride_pk PRIMARY KEY ( ride_key );
+
+
+--tworzenie kluczy foreign key pomiędzy tabel "bike" i "bike_station"
+ALTER TABLE bike
+    ADD CONSTRAINT bike_bike_station_fk FOREIGN KEY ( bike_station_key )
+        REFERENCES bike_station ( bike_station_key );
+
+
+--tworzenie kluczy foreign key pomiędzy tabel "bike" i "bike_status"
+ALTER TABLE bike
+    ADD CONSTRAINT bike_bike_status_fk FOREIGN KEY ( bike_status_key )
+        REFERENCES bike_status ( bike_status_key );
+
+
+--tworzenie kluczy foreign key pomiędzy tabel "bike" i "bike_subtype"
+ALTER TABLE bike
+    ADD CONSTRAINT bike_bike_subtype_fk FOREIGN KEY ( bike_subtype_key )
+        REFERENCES bike_subtype ( bike_subtype_key );
+
+
+--tworzenie kluczy foreign key pomiędzy tabel "bike_station" i "city"
+ALTER TABLE bike_station
+    ADD CONSTRAINT bike_station_city_fk FOREIGN KEY ( city_key )
+        REFERENCES city ( city_key );
+
+
+--tworzenie kluczy foreign key pomiędzy tabel "bike_station" i "bike_station_type"
+ALTER TABLE bike_station
+    ADD CONSTRAINT bike_station_type_fk FOREIGN KEY ( bike_station_type_key )
+        REFERENCES bike_station_type ( bike_station_type_key );
+
+
+--tworzenie kluczy foreign key pomiędzy tabel "bike_subtype" i "bike_type"
+ALTER TABLE bike_subtype
+    ADD CONSTRAINT bike_subtype_bike_type_fk FOREIGN KEY ( bike_type_key )
+        REFERENCES bike_type ( bike_type_key );
+
+
+--tworzenie kluczy foreign key pomiędzy tabel "city" i "country"
+ALTER TABLE city
+    ADD CONSTRAINT city_country_fk FOREIGN KEY ( country_key )
+        REFERENCES country ( country_key );
+
+
+--tworzenie kluczy foreign key pomiędzy tabel "customer" i "account_status"
+ALTER TABLE customer
+    ADD CONSTRAINT customer_account_status_fk FOREIGN KEY ( account_status_key )
+        REFERENCES account_status ( account_status_key );
+
+
+
+--tworzenie kluczy foreign key pomiędzy tabel "customer" i "city"
+ALTER TABLE customer
+    ADD CONSTRAINT customer_city_fk FOREIGN KEY ( city_key )
+        REFERENCES city ( city_key );
+
+
+--tworzenie kluczy foreign key pomiędzy tabel "customer_payment_method" i "customer"
+ALTER TABLE customer_payment_method
+    ADD CONSTRAINT customer_fk FOREIGN KEY ( customer_key )
+        REFERENCES customer ( customer_key );
+
+
+--tworzenie kluczy foreign key pomiędzy tabel "customer_payment_method" i "payment_method"
+ALTER TABLE customer_payment_method
+    ADD CONSTRAINT customer_payment_method_fk FOREIGN KEY ( payment_method_key )
+        REFERENCES payment_method ( payment_method_key );
+
+
+
+--tworzenie kluczy foreign key pomiędzy tabel "ride" i "bike"
+ALTER TABLE ride
+    ADD CONSTRAINT ride_bike_fk FOREIGN KEY ( bike_key )
+        REFERENCES bike ( bike_key );
+
+
+--tworzenie kluczy foreign key pomiędzy tabel "ride" i "bike_station"
+ALTER TABLE ride
+    ADD CONSTRAINT ride_bike_station_finish_fk FOREIGN KEY ( bike_station_finish_key )
+        REFERENCES bike_station ( bike_station_key );
+
+
+--tworzenie kluczy foreign key pomiędzy tabel "ride" i "bike_station"
+ALTER TABLE ride
+    ADD CONSTRAINT ride_bike_station_start_fk FOREIGN KEY ( bike_station_start_key )
+        REFERENCES bike_station ( bike_station_key );
+
+
+--tworzenie kluczy foreign key pomiędzy tabel "ride" i "customer"
+ALTER TABLE ride
+    ADD CONSTRAINT ride_customer_fk FOREIGN KEY ( customer_key )
+        REFERENCES customer ( customer_key );
+
+
+--tworzenie kluczy foreign key pomiędzy tabel "ride" i "ride_status"
+ALTER TABLE ride
+    ADD CONSTRAINT ride_status_fk FOREIGN KEY ( ride_status_key )
+        REFERENCES ride_status ( ride_status_key );
